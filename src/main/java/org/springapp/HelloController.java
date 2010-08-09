@@ -20,6 +20,6 @@ public class HelloController {
         // FIXME: use logging
         System.out.println("Returning hello view");
 
-        return new ModelAndView("hello.ftl");   // no Map associated with ModelAndView
+        return new ModelAndView("hello");   // no Map associated with ModelAndView
     }
 }
