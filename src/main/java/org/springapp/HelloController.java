@@ -16,10 +16,6 @@ public class HelloController {
 	@RequestMapping("/hello.ftl")
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-
-        // FIXME: use logging
-        System.out.println("Returning hello view");
-
         return new ModelAndView("hello");   // no Map associated with ModelAndView
     }
 }

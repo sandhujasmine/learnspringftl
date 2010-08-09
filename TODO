@@ -1,5 +1,7 @@
-[_] basic Maven build
-[_] set up Jetty
-[_] serve a static page
-[_] Spring
-[_] Freemarker
+[X] basic Maven build
+[X] set up Jetty
+[X] serve a static page
+[X] Spring
+[X] Freemarker
+[_] pass data to .ftl page
+[_] submit form in .ftl page, accept data
