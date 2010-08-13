@@ -12,16 +12,30 @@
 
     <context:component-scan base-package="org.springapp" />
     <mvc:annotation-driven />
-
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>locale/mymessages</value>    <!-- This must reside in classpath? -->
+            </list>
+        </property>
+    </bean>
+    
     <bean id="freemarkerConfig"
         class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="/WEB-INF/templates" />
+        <property name="templateLoaderPaths">
+            <list>
+                <value>/WEB-INF/templates</value> 
+                <value>/WEB-INF/templates/includes</value> 
+                <value>/WEB-INF/templates/lib</value> 
+            </list>
+        </property>
         <property name="freemarkerVariables">
             <map>
                 <entry key="xml_escape" value-ref="fmXmlEscape" />
             </map>
         </property>
     </bean>
+
     <bean id="fmXmlEscape" class="freemarker.template.utility.XmlEscape"/>
 
     <bean id="viewResolver"
