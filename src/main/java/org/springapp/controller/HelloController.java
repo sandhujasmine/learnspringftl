@@ -25,7 +25,7 @@ import java.util.Map;
 @Controller
 public class HelloController {
 
-	@RequestMapping("/hello.ftl")
+	@RequestMapping("/hello")
     public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
 		
