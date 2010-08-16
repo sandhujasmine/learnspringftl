@@ -6,7 +6,7 @@ SYNOPSIS
     
     then visit:
     
-        http://localhost:8080/
+        http://localhost:8080/learnspringftl/hello.ftl
     
     To create a WAR for deploying in another servlet container:
     

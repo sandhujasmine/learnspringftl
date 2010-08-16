@@ -5,3 +5,13 @@
 [X] Freemarker
 [_] pass data to .ftl page
 [_] submit form in .ftl page, accept data
+[X] remove Mifos-specific code
+	instead, just add bits and pieces as necessary
+	ie: to test Spring Security, implement that anew
+[_] fix "mvn jetty:run" so hello.ftl is shown by default
+[_] serve "GET /hello" instead of "GET /hello.ftl"
+	doesn't expose underlying implementation (Freemarker)
+	cleaner URLs
+
+-----------------------------------------------------------------------
+vim: ft=vo_base
