@@ -1,20 +1,52 @@
 [#ftl]
-[#include "layout.ftl"]
+[#import "spring.ftl" as spring]
 
-<!-- what is the span id attribute used for? -->
-[@spring.messageText "admin", "testing .. "/]
-[#--
-[@adminLeftPaneLayout]
-    <span id="page.id" title="view_question_details"></span>
-	<div class="orangeheading marginTop15">
-		[@spring.messageText "", "testing .. "/]
-	</div>
-[/@adminLeftPaneLayout]
---]
-<pre>
-Hello, World!
+<!-- just some sample testing of how to display the model returned by HelloController.java -->
 
-3 times 5 is ${3 * 5}
-
-Bye...!
-</pre>
+<html>
+  <head>
+    <title>Hello world!</title>
+  </head>
+  <body>
+    <h1>[@spring.message "greeting" /]</h1>
+    <h3> well .. not a form example quite yet!</h3>
+    <p>
+        My string object is : ${hello}. <br>
+        My boolean object is: 
+        [#if checkBool]
+        	True.
+       	[#else]
+        	False.
+        [/#if]
+      	<br>
+      	The message list is: 
+      	<ol>
+      	[#list mssgs as mssg]
+      		<li> ${mssg}[#if mssg_has_next], [#else].[/#if]
+      	[/#list]
+      	</ol>
+      	
+      	First mssg is: ${mssgs[0]}. <br>
+      	
+      	The hash map contains: <br>
+      	name: {${info.name}}. <br>
+      	[#if info.age < 5]
+	      	age: {${info.age}}.
+      	[/#if]
+    </p>
+    
+<!--    
+    Thus my model can be shown as:<br>
+    root <br>
+    .<br>
+    ..${hello}<br>
+    .<br>
+    ..[#if checkBool]True[#else]False[/#if]<br>
+    .<br>
+    ..mssgs<br>
+    [#list mssgs as mssg]<br>
+    .....${mssg}<br>
+    [/#list]
+    -->
+  </body>
+</html>
