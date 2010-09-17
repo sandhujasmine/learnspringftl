@@ -17,6 +17,7 @@
         <property name="basenames">
             <list>
                 <value>locale/hello_messages</value>    <!-- This must reside in classpath? -->
+                <value>locale/messages</value>    <!-- This must reside in classpath? -->
             </list>
         </property>
     </bean>
@@ -25,7 +26,7 @@
         class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPaths">
             <list>
-                <value>/WEB-INF/templates</value> 
+                <value>/WEB-INF/templates</value>
             </list>
         </property>
         <property name="freemarkerVariables">
@@ -42,5 +43,7 @@
         <property name="cache" value="false" />
         <property name="prefix" value=""/>
         <property name="suffix" value=".ftl" />
+        <!-- if you want to use the Spring FreeMarker macros, set this property to true -->
+        <property name="exposeSpringMacroHelpers" value="true"/> 
     </bean>
 </beans>
