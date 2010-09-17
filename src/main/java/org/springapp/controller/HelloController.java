@@ -32,8 +32,9 @@ public class HelloController {
 		// create a model-and-view using 'welcome’
 	    ModelAndView mav = new ModelAndView("hello");				// initialize ModelAndView object with the view "hello"
 	    Map<String,Object> model = new HashMap<String, Object>();	// model that will be returned for display
-	    
-	    List<String> mssgs = createList();			// create a list object to be added to model
+	   
+	    String[] mssgsToInput = {"mssg 1","mssg 2","mssg 3","mssg 4"};
+	    List<String> mssgs = createList(mssgsToInput);// create a list object to be added to model
 	    Map<String, Object> subMap = createMap();	// create a map object added to model
 	    
 	    // all objects to model
@@ -60,12 +61,12 @@ public class HelloController {
 	}
 	
 	// just returns a list to be displayed in hello.ftl
-	private List<String> createList() {
-		//String[] mssgs = {"mssg 1","mssg 2","mssg 3","mssg 4"}; // easier but don't know how to use??
+	private List<String> createList( String[] items) {
 	    List<String> mssgs = new ArrayList<String>();
-	    mssgs.add("mssg 1");
-	    mssgs.add("mssg 2");
-	    mssgs.add("mssg 3");
+	    for (int i = 0; i < items.length; i++) {
+	    	mssgs.add(items[i]);
+	    }
+	    
 		return mssgs;
 	}
 }
