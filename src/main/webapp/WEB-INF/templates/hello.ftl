@@ -5,7 +5,7 @@
 
 <html>
   <head>
-    <title>Hello world!</title>
+    <title>Simple Examples!</title>
   </head>
   <body>
     <h1>[@spring.message "greeting" /]</h1>
@@ -34,6 +34,7 @@
 	      	age: {${info.age}}.
       	[/#if]
     </p>
+    <a href="HelloForm.ftl">Simple Form example</p>
     
 <!--    
     Thus my model can be shown as:<br>
