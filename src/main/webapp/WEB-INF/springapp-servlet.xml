@@ -16,12 +16,11 @@
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>locale/hello_messages</value>    <!-- This must reside in classpath? -->
-                <value>locale/messages</value>    <!-- This must reside in classpath? -->
+                <value>locale/messages</value>    <!-- This must reside in classpath -->
             </list>
         </property>
     </bean>
-    
+
     <bean id="freemarkerConfig"
         class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPaths">
