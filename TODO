@@ -3,8 +3,8 @@
 [X] serve a static page
 [X] Spring
 [X] Freemarker
-[_] pass data to .ftl page
-[_] submit form in .ftl page, accept data
+[X] pass data to .ftl page
+[X] submit form in .ftl page, accept data
 [X] remove Mifos-specific code
 	instead, just add bits and pieces as necessary
 	ie: to test Spring Security, implement that anew
@@ -12,6 +12,5 @@
 [_] serve "GET /hello" instead of "GET /hello.ftl"
 	doesn't expose underlying implementation (Freemarker)
 	cleaner URLs
-
 -----------------------------------------------------------------------
 vim: ft=vo_base
