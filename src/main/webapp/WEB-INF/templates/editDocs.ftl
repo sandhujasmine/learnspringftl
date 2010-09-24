@@ -27,7 +27,7 @@
 	</li>
 	<li>
 	[@spring.bind "formBean.name" /]
-	<label for="name"><span class="red">* </span>Document Name:</label> 
+	<label for="name"><span class="red">* </span>[@spring.message "manageReports.administrativedocumenttitle" /]</label> 
 	<input id="name" type="text" name="${spring.status.expression}" value="${spring.status.value?default("")}" /><br>
   	[#list spring.status.errorMessages as error] <b>${error}</b> <br> [/#list]
 	</li>
