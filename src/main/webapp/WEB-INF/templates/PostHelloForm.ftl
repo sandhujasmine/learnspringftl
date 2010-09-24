@@ -28,3 +28,5 @@
 	<li><label>Object ID: </label>${userInputs.id}</li>
 	</ol>
 </fieldset>
+
+<a href="hello.ftl">return home</a>
