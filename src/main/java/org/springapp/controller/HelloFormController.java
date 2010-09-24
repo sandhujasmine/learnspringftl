@@ -22,8 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelloFormController {
 		
-	// Yet another simple GetHello.ftl page that sends the HTTP GET request 
-	// This view just displays a form with some default values
+	/** This view just displays a form with some default values */
 	@RequestMapping( value="/HelloForm",method=RequestMethod.GET)
 	@ModelAttribute("helloForm")
 	public HelloForm GetHello(Model model){
@@ -31,8 +30,6 @@ public class HelloFormController {
 		return hello;
 	}
 	
-	// Yet another simple GetHello.ftl page that sends the HTTP GET request 
-	// This view just displays a form with some default values
 	@RequestMapping( value="/PostHelloForm", method=RequestMethod.POST)
 	public ModelAndView PostHello(@ModelAttribute HelloForm helloForm, BindingResult result) {
 		
@@ -42,11 +39,6 @@ public class HelloFormController {
 			System.out.println("No BindingResult errors!");
 		}
 		
-		/* TESTING
-		System.out.println("First Name:" + helloForm.getFirstname() +
-				"Last Name:" + helloForm.getLastname() +
-				"ID:" + helloForm.getId());
-		*/
 		ModelAndView mav = new ModelAndView("PostHelloForm");
 		mav.addObject("userInputs", helloForm);
 		

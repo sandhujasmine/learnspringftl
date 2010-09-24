@@ -7,7 +7,7 @@
 
 <head>
 	<title>Form Example</title>
-	<link rel="stylesheet" type="text/css" href="pages/css/learnspringftl.css" />
+	<link rel="stylesheet" type="text/css" href="css/learnspringftl.css" />
 </head>
 
 <h1>

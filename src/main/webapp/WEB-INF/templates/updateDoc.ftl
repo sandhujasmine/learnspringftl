@@ -3,7 +3,7 @@
 
 <head>
 	<title>Post Form Input</title>
-	<link rel="stylesheet" type="text/css" href="pages/css/learnspringftl.css" />
+	<link rel="stylesheet" type="text/css" href="css/learnspringftl.css" />
 </head>
 
 <h1>Display Form Example Data</h1>
