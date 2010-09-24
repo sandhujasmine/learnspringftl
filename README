@@ -1,15 +1,15 @@
 SYNOPSIS
 
     To run in a standalone Jetty server:
-    
+
         mvn jetty:run
-    
+
     then visit:
-    
-        http://localhost:8080/learnspringftl/hello.ftl
-    
+
+        http://localhost:8080/learnspringftl/
+
     To create a WAR for deploying in another servlet container:
-    
+
         mvn package
         cp target/XXXXXXX.war /path/to/deploy/dir
 
