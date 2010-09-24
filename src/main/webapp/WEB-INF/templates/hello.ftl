@@ -9,7 +9,6 @@
   </head>
   <body>
     <h1>[@spring.message "greeting" /]</h1>
-    <h3> well .. not a form example quite yet!</h3>
     <p>
         My string object is : ${hello}. <br>
         My date object is : ${date?datetime}. <br>
