@@ -12,6 +12,7 @@
     <h3> well .. not a form example quite yet!</h3>
     <p>
         My string object is : ${hello}. <br>
+        My date object is : ${date?datetime}. <br>
         My boolean object is: 
         [#if checkBool]
         	True.

@@ -1,11 +1,5 @@
 package org.springapp.controller;
 
-/*
-* A very basic controller to see how to access the different
-* objects created within the ModelAndView object -- the display
-* is given in hello.ftl
-*/
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,13 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-//import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * A very basic controller to see how to access the different objects created
+ * within the ModelAndView object -- the display is given in hello.ftl
+ */
 @Controller
 public class HelloController {
 
@@ -43,9 +40,8 @@ public class HelloController {
 	    model.put("mssgs", mssgs);
 	    model.put("info", subMap);
 	    
-	    // couldn't quite figure out how to add a Date object to model .. or how to call it from within freemarker
-	    // Date date = new Date(); don't know how to use this
-	    //model.put("date", new Date()); // don't know how to use this yet
+	    Date date = new Date();
+	    model.put("date", new Date());
 	    
 	    // finally, add and return this model object to be displayed by hello.ftl
 	    mav.addAllObjects( model);
