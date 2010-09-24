@@ -8,7 +8,8 @@
 [X] remove Mifos-specific code
 	instead, just add bits and pieces as necessary
 	ie: to test Spring Security, implement that anew
-[_] fix "mvn jetty:run" so hello.ftl is shown by default
+[X] fix "mvn jetty:run" so hello.ftl is shown by default
+	instead, made an index.html file
 [_] serve "GET /hello" instead of "GET /hello.ftl"
 	doesn't expose underlying implementation (Freemarker)
 	cleaner URLs
