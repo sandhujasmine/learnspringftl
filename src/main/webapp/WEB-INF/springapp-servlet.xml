@@ -13,12 +13,17 @@
 
     <context:component-scan base-package="org.springapp" />
     <mvc:annotation-driven />
-    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+
+    <!-- Using ReloadableResourceBundleMessageSource so changes can be seen
+         immediately during development. Note that it parses "basenames"
+         differently, see Javadoc for the class. -->
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>locale/messages</value>    <!-- This must reside in classpath -->
+                <value>/WEB-INF/i18n/messages</value>
             </list>
         </property>
+        <property name="cacheSeconds" value="0"/>
     </bean>
 
     <bean id="freemarkerConfig"
