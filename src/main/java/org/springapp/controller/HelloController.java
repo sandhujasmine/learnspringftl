@@ -1,6 +1,9 @@
 package org.springapp.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,6 +16,7 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -64,5 +68,17 @@ public class HelloController {
 	    }
 	    
 		return mssgs;
+	}
+
+	@Autowired
+	private MessageSource messageSource;
+
+	@RequestMapping("/aw")
+    public ModelAndView showAutowiring(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+		String usMessage = messageSource.getMessage("message.for.autowire.test", new String[]{"foo"}, new Locale("en", "US"));
+	    ModelAndView mav = new ModelAndView("aw");
+	    mav.addObject("message_for_en_US", usMessage);
+	    return mav;
 	}
 }
