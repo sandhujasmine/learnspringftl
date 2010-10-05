@@ -17,13 +17,19 @@
     <!-- Using ReloadableResourceBundleMessageSource so changes can be seen
          immediately during development. Note that it parses "basenames"
          differently, see Javadoc for the class. -->
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <!-- UPDATE (10/1/10): changed it back to ResourceBundleMessageSource so
+         the messages can be accessed from inside Java files as well. Otherwise, will
+         need to add WEB-INF/i18n/ to JRE classpath so we can read messages in Java. This
+         is done to create hash maps and store within ModelAndView object which is then passed
+         onto the view. Of course, this means the properties file is used by both the ftl (view)
+         and the java (controllers).
+         -->
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>/WEB-INF/i18n/messages</value>
+                <value>org.springapp.i18n.messages</value>
             </list>
         </property>
-        <property name="cacheSeconds" value="0"/>
     </bean>
 
     <bean id="freemarkerConfig"
