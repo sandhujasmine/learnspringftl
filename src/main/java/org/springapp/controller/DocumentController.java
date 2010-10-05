@@ -9,68 +9,190 @@
 package org.springapp.controller;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+
 @Controller
+@SessionAttributes("formBean")
 public class DocumentController {
 
+    // Using EditFundsController.java as an example
+    private static final String REDIRECT_TO_ADMIN_SCREEN = "redirect:/AdminAction.do?method=load";
+    private static final String REDIRECT_TO_VIEW_DOCS = "redirect:/editDocs.ftl";
+    private static final String CANCEL_PARAM = "CANCEL";
+    private static final String EDIT_PARAM = "EDIT";
+    private static final String FORM_VIEW = "editDocs";
+	
     @RequestMapping(value="/viewDocs", method = RequestMethod.GET)
-    @ModelAttribute("listofadministrativedocuments")
-    public List<DocumentDto> showAllDocuments() {
-        return createStub();
+    public ModelAndView showAllDocuments() {
+    	ModelAndView modelAndView = new ModelAndView("viewDocs");
+    	modelAndView.addObject("listofadministrativedocuments", createStub());
+    	return modelAndView;
     }
 
-    @RequestMapping(value="/editDocs", method = RequestMethod.GET)
-    @ModelAttribute("formBean")
-    public DocumentBean showDocument(HttpServletRequest request) {
+    @RequestMapping(value = "/editDocs", method = RequestMethod.GET)
+    public ModelAndView showDocument(HttpServletRequest request) {
     	Integer id = Integer.parseInt( request.getParameter("id"));
     	DocumentDto document = findByDocId( id);
     	
-    	/* TODO: Since the DocumentDto is an immutable object. We would like to have
-    	*  a bean bound to the form that updates the document info. Basically don't want to 
-    	*  chane the DocumentDto object. Work In Progress.
-    	*/
-    	DocumentBean documentBean = new DocumentBean( document.getId(), document.getName(), document.getIdentifier(), document.isActive());
-    	return documentBean;
-    }
+    	ModelAndView modelAndView = new ModelAndView( FORM_VIEW);
     
-    @RequestMapping(value="/updateDoc", method=RequestMethod.POST)
-    public ModelAndView postDocument(@ModelAttribute DocumentBean formBean, BindingResult result) {
+        /*
+         * Form Backed Object - dummy data for testing
+         */    
+    	DocumentBean formBean = new DocumentBean();
+    	formBean.setAccountType("loan");
+    	formBean.setName( document.getName());
+    	formBean.setId( document.getId());
+    	//String[] statusEG = {"pendingApproval","appApproved"};
+    	//formBean.setshowStatus( statusEG);
+    
+        // following maps used by spring macros formSingleSelect and formMultiSelect    
+    	Map<String, String> accountType = accountTypeMap();
+    	Map<String, String> showStatus = accountStatusMap(formBean.getAccountType());
+    	
+    	modelAndView.addObject("status", showStatus);
+    	modelAndView.addObject("accountType", accountType);
+    	modelAndView.addObject("formBean", formBean);
+    	modelAndView.addObject("previewView", "docPreview");
+    	
+    	return modelAndView;
+    }
+
+	private Map<String, String> accountStatusMap(String accountType) {
 		
-		if( result.hasErrors()) {
-			System.out.println("BindingResult has errors!");
-		} else {
-			System.out.println("No BindingResult errors!");
-		}
-		// want to update the persistent data
-		System.out.println("Doc Name:" + formBean.getName() +
-				"Doc identifier:" + formBean.getIdentifier());
+		// hash map is used by view by spring macro formMultiSelect
+		ResourceBundle resource = ResourceBundle.getBundle("org.springapp.i18n.messages");
 		
-		ModelAndView mav = new ModelAndView("updateDoc");
-		mav.addObject("userInputs", formBean);
-		
-		return mav;
+		// used to populate UI listbox
+		Map<String, String> showStatus = new LinkedHashMap<String, String>();
+		showStatus.put("pendingApproval", resource.getString("manageReports.options.pendingApproval"));
+    	showStatus.put("appApproved", resource.getString("manageReports.options.appApproved"));
+    	
+    	if (accountType.equals("loan")) {
+    		showStatus.put("activeGoodStanding", resource.getString("manageReports.options.activeGoodStanding"));
+        	showStatus.put("activeBadStanding", resource.getString("manageReports.options.activeBadStanding"));
+        	showStatus.put("closedObligationMet", resource.getString("manageReports.options.closedObligationMet"));
+        	showStatus.put("closedWrittenOff", resource.getString("manageReports.options.closedWrittenOff"));
+        	showStatus.put("closedRescheduled", resource.getString("manageReports.options.closedRescheduled"));
+        	showStatus.put("custmrAccountActive", resource.getString("manageReports.options.custmrAccountActive"));
+        	showStatus.put("custmrAccountInactive", resource.getString("manageReports.options.custmrAccountInactive"));
+        	showStatus.put("cancel", resource.getString("manageReports.cancel"));
+    	} else {
+    		// accountType can only be "loan" or "savings"
+    		showStatus.put("active", resource.getString("manageReports.options.active"));
+    		showStatus.put("closed", resource.getString("manageReports.options.closed"));
+    		showStatus.put("inactive", resource.getString("manageReports.options.inactive"));
+    		showStatus.put("cancel", resource.getString("manageReports.cancel"));
+    	}
+    	
+    	return showStatus;
 	}
+
+
+	private Map<String, String> accountTypeMap() {
+
+		// Linked list for use with spring macro formSingleSelect
+		ResourceBundle resource = ResourceBundle.getBundle("org.springapp.i18n.messages");
+    	Map<String, String> accountType = new LinkedHashMap<String, String>();
+
+    	accountType.put("select", "-- Select --");
+    	accountType.put("loan", resource.getString("manageReports.loanaccount"));
+    	accountType.put("savings", resource.getString("manageReports.savingsaccount"));
+
+		return accountType;
+	}
+    
+    @RequestMapping( value = "/editDocs", method=RequestMethod.POST)
+    public ModelAndView postDocument(@RequestParam(value = CANCEL_PARAM, required = false) String cancel,
+            @RequestParam(value = "PREVIEWVIEW", required = true) String previewView,
+            @ModelAttribute("formBean") DocumentBean formBean, BindingResult result, SessionStatus status) {
+
+        ModelAndView modelAndView = new ModelAndView(REDIRECT_TO_VIEW_DOCS);
+
+        if (StringUtils.isNotBlank(cancel)) {
+            modelAndView.setViewName( REDIRECT_TO_VIEW_DOCS);
+            status.setComplete();
+
+        } else if (result.hasErrors()) {
+            modelAndView.setViewName(FORM_VIEW);
+            modelAndView.addObject( "previewView", formBean);
+
+        } else {
+		    modelAndView.setViewName(previewView); 
+		    modelAndView.addObject("formBean", formBean);
+        } 
+		
+		// TESTING
+		System.out.println("Doc Name:" + formBean.getName());
+		System.out.println("status:" + formBean.getshowStatus());
+		
+		return modelAndView;
+	}
+
+
+    // SEE IF WE CAN PUT THE CONTROLLER FOR ALL ADMIN FUNCTIONALITY IN HERE
+    // WIP
+    //@RequestMapping(value = "/docPreview", method = RequestMethod.POST)
+    //public ModelAndView processFormSubmit(@RequestParam(value = EDIT_PARAM, required = false) String edit,
+    //        @RequestParam(value = CANCEL_PARAM, required = false) String cancel, DocumentBean formBean,
+    //        BindingResult result, SessionStatus status) {
+
+    //    String viewName = REDIRECT_TO_ADMIN_SCREEN;
+    //    ModelAndView modelAndView = new ModelAndView();
+    //    if (StringUtils.isNotBlank(edit)) {
+    //        viewName = "editDocs";
+    //        modelAndView.setViewName(viewName);
+    //        modelAndView.addObject("formBean", formBean);
+    //        modelAndView.addObject("previewView", "fundPreview");
+    //    } else if (StringUtils.isNotBlank(cancel)) {
+    //        viewName = REDIRECT_TO_VIEW_DOCS;
+    //        modelAndView.setViewName(viewName);
+    //        status.setComplete();
+    //    } else if (result.hasErrors()) {
+    //        viewName = "docPreview";
+    //        modelAndView.setViewName(viewName);
+    //        modelAndView.addObject("formBean", formBean);
+    //    } else {
+    //        Integer id = formBean.getId();
+    //        DocumentDto documentUpdate = findByDocId(id);
+    //        
+    //        // update object in persistent database using Service interface
+    //        //this.adminDocumentServiceFacade.updateDocument(documentUpdate);    
+    //        
+    //        viewName = REDIRECT_TO_ADMIN_SCREEN;
+    //        modelAndView.setViewName(viewName);
+    //        status.setComplete();
+    //    }
+    //    return modelAndView;
+    //}
     
     private DocumentDto findByDocId(Integer id) {
     	List<DocumentDto> docs = createStub();
-    	return docs.get(0);	// for now just return the 0th index
+    	return docs.get(id);
     }
     
     @SuppressWarnings("PMD")
     private List<DocumentDto> createStub(){
         List<DocumentDto> docs = new ArrayList<DocumentDto>();
 
-        Integer[] docid = {1, 2, 3, 4};
+        Integer[] docid = {0, 1, 2, 3};
         Boolean[] isactive = {true, false, true, false};
         String[] name = {"doc 1","doc 2","doc 3","doc 4"};
         String[] identifier   = {"id 1","id 2","id 3","id 4"};
