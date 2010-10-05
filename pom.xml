@@ -89,5 +89,11 @@
             <artifactId>groovy</artifactId>
             <version>1.7.4</version>
         </dependency>
+        <!-- StringUtils: org.apache.commons.lang.StringUtils -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.4</version>
+        </dependency> 
     </dependencies>
 </project>
