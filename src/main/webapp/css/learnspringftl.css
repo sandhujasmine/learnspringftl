@@ -29,7 +29,7 @@ fieldset.submit {
 /* right aligned label */
 label {
     float: left;
-    width: 10em;
+    width: 20em;
     margin-right: 1em;
     text-align: right;
 }
