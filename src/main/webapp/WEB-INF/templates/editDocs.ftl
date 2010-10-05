@@ -4,8 +4,6 @@
 * This is an example for displaying a stub of documents.
 *
 --]
-[#assign loan][@spring.message "manageReports.loanaccount"/][/#assign]
-[#assign savings][@spring.message "manageReports.savingsaccount"/][/#assign]
 
 <head>
 	<title>Form Example</title>
@@ -13,7 +11,7 @@
 </head>
 
 <h1>Form Example</h1>
-<form action="updateDoc.ftl" method = "POST">
+<form action="editDocs.ftl" method = "POST">
 <fieldset>
 <legend>[@spring.message "manageReports.documentinformation" /]</legend>
 	<ol>
@@ -25,82 +23,53 @@
 		[@spring.message "manageReports.clickcanceltoreturntoadmin" /]<br>
 		<span class="red">* </span>[@spring.message "manageReports.requiredfieldsmarked" /]
 	</li>
+	
 	<li>
-	[@spring.bind "formBean.name" /]
-	<label for="name"><span class="red">* </span>[@spring.message "manageReports.administrativedocumenttitle" /]</label> 
-	<input id="name" type="text" name="${spring.status.expression}" value="${spring.status.value?default("")}" /><br>
-  	[#list spring.status.errorMessages as error] <b>${error}</b> <br> [/#list]
+	
+	<input type="hidden" name="PREVIEWVIEW" id="previewview" value="${previewView}" />
+
+	[#--
+		Note: ${spring.status.expression}: expression used to retrieve bean/property
+		In this case, it evaluates to name, so could've just used for="name" as well 
+	--]
+	[@spring.formInput "formBean.name", "maxlength=100", "text"/]
+	<label for="${spring.status.expression}"><span class="red">* </span>[@spring.message "manageReports.administrativedocumenttitle" /]</label>
 	</li>
 	
 	<li>
-	[@spring.bind "formBean.identifier" /]
-	<label for="identity"><span class="red">* </span>Identifier:</label>
-	<input id="identity" type="text" name="${spring.status.expression}" value="${spring.status.value?default("")}" /><br>
-  	[#list spring.status.errorMessages as error] <b>${error}</b> <br> [/#list]
-  	</li>
-  	
-  	[#-- 
-  		Binding formBean.active to the radio buttons is not working correctly.
-  	--]
-  	<li>
-  	[@spring.bind "formBean.active" /]
-	<label for="active">Active: </label>
-	[#if formBean.active]
-		<input id="active" type="radio" name="${spring.status.expression}" checked />
-	[#else]
-		<input id="active" type="radio" name="${spring.status.expression}" />
-	[/#if]
-	</li>		
-	<li>
-	<label for="inactive">Inactive: </label>
-	[#if formBean.active]
-		<input id="inactive" type="radio" name="${spring.status.expression}" />
-	[#else]
-		<input id="inactive" type="radio" name="${spring.status.expression}" checked/>
-	[/#if]
+	[@spring.formSingleSelect "formBean.accountType", accountType /]
+	<label for="${spring.status.expression}"><span class="red">* </span>[@spring.message "manageReports.accounttype" /]</label>
+	</li>
 	
-  	[#list spring.status.errorMessages as error] <b>${error}</b> <br> [/#list]
-  	</li>
-  	
-  	<li>
-	[@spring.bind "formBean.id" /]
-	<label for="id"><span class="red">* </span>ID:</label>
-	<input id="id" type="text" name="${spring.status.expression}" value="${spring.status.value?default("")}" /><br>
-  	[#list spring.status.errorMessages as error] <b>${error}</b> <br> [/#list]
-  	</li>  	
+	[#--
+		Following is just a listbox display of the options based on whether the account
+		type is loan or savings.
+	--]
+	<li>
+	[@spring.bind "formBean.showStatus" /]
+	<label for="statusMap"><span class="red">* </span>[@spring.message "manageReports.showwhenstatus" /]</label>
+	<select multiple="multiple" size=6>
+		[#list status?keys as value]
+			<option value=${value?html}>${status[value]?html}</option><br>
+	    [/#list]
+	</select>	
+	</li>
+		
+	[#--
+		Following is a place holder for now - still need to figure out the spring implementation
+		for file uploads.
+	--]
+	<li>
+		<label for="file">[@spring.message "manageReports.selectadministrativedocument" /]</label>
+		<input type="file" name="file" value="browse"/>
+	</li>
+		
   	</ol>
 </fieldset>
 	
-[#-- Submit data and invoke PostHelloForm.ftl --]
+[#-- Submit data and invoke updateDoc.ftl --]
 <fieldset class="submit">
-	<input type="submit" value="Submit" />
+	<input type="submit" name="preview" value="[@spring.message "manageReports.preview" /]" />
+	<input type="submit" id="CANCEL" name="CANCEL" value="[@spring.message "manageReports.cancel" /]" />
 </fieldset>
 </form>	
-
-	[#--
-	<p>manageReports.documentinformation - [@spring.bind "formBean.name"/]
-	<label name="${spring.status.expression}">${spring.status.value?default("")}</label>
-	[@spring.showErrors "<br />"/]
-	</p>
-	
-	<form name="" action="updateDoc.ftl" method="POST">
-		<fieldset>
-		<ol>
-			<li>
-			  <label for=formBean.name>[@spring.message "manageReports.administrativedocumenttitle"/]:</label>
-			  [@spring.bind "formBean.name"/]
-			  [@spring.formInput "formBean.name", '', ''/]
-			  [#list spring.status.errorMessages as error] <b>${error}</b> <br> [/#list]
-			</li>
-			<li>
-			  <label for=formBean.id>[@spring.message "manageReports.accounttype"/]:</label> 
-			  [@spring.formSingleSelect "formBean.id", ["--select one--",loan,savings], ''/]
-			</li>
-			<li>
-			  [@spring.message "manageReports.showwhenstatus"/]:
-			  [@spring.formSingleSelect "formBean.identifier", ["--select one--",loan,savings], ''/]
-			  <input type="submit" value="Submit" />
-			</li>
-		</ol>
-		</fieldset>
-	</form> --]
