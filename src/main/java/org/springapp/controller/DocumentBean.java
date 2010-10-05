@@ -9,33 +9,56 @@
 
 package org.springapp.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class DocumentBean {
 
-    private Integer id;
-    private String name;
-    private String identifier;
-    private boolean active;
-    		
-    public DocumentBean(Integer id, String name, String identifier, boolean active) {
-        this.id = id;
-        this.name = name;
-        this.identifier = identifier;
-        this.active = active;
-    }
-
+    private Integer id = -1;			// unique ID associated with document
+    
+    //@NotEmpty @Size(min=1, max=100)		// not sure about max size
+    private String name = "";			// document title
+    
+    //@NotEmpty
+    private String accountType = "";// savings or loan
+    
+    private List<String> showStatus = new ArrayList<String>();
+    
+    /*
+     * TODO: Also need to add an object (file object?) to which
+     * an uploaded file will be bound.
+     */
+    
     public Integer getId() {
-        return this.id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getIdentifier() {
-        return this.identifier;
-    }
-
-    public boolean isActive() {
-        return this.active;
-    }
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getAccountType() {
+		return accountType;
+	}
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
+	public List<String> getshowStatus() {
+		return showStatus;
+	}
+	public void setshowStatus(List<String> showStatus) {
+		System.out.println("setshowStatus - List input");
+		this.showStatus = showStatus;
+	}
+	public void setshowStatus(String[] showStatus) {
+		System.out.println("setshowStatus - String[] input");
+		for (int i = 0; i < showStatus.length; i++) {
+	    	this.showStatus.add( showStatus[i] );
+	    }
+	}  
 }
