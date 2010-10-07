@@ -17,6 +17,8 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,7 +40,10 @@ public class DocumentController {
     private static final String CANCEL_PARAM = "CANCEL";
     private static final String EDIT_PARAM = "EDIT";
     private static final String FORM_VIEW = "editDocs";
-	
+
+    @Autowired
+    private MessageSource messageSource;
+
     @RequestMapping(value="/viewDocs", method = RequestMethod.GET)
     public ModelAndView showAllDocuments() {
     	ModelAndView modelAndView = new ModelAndView("viewDocs");
@@ -78,28 +83,27 @@ public class DocumentController {
 	private Map<String, String> accountStatusMap(String accountType) {
 		
 		// hash map is used by view by spring macro formMultiSelect
-		ResourceBundle resource = ResourceBundle.getBundle("org.springapp.i18n.messages");
 		
 		// used to populate UI listbox
 		Map<String, String> showStatus = new LinkedHashMap<String, String>();
-		showStatus.put("pendingApproval", resource.getString("manageReports.options.pendingApproval"));
-    	showStatus.put("appApproved", resource.getString("manageReports.options.appApproved"));
+		showStatus.put("pendingApproval", messageSource.getMessage("manageReports.options.pendingApproval", null, null));
+    	showStatus.put("appApproved", messageSource.getMessage("manageReports.options.appApproved", null, null));
     	
     	if (accountType.equals("loan")) {
-    		showStatus.put("activeGoodStanding", resource.getString("manageReports.options.activeGoodStanding"));
-        	showStatus.put("activeBadStanding", resource.getString("manageReports.options.activeBadStanding"));
-        	showStatus.put("closedObligationMet", resource.getString("manageReports.options.closedObligationMet"));
-        	showStatus.put("closedWrittenOff", resource.getString("manageReports.options.closedWrittenOff"));
-        	showStatus.put("closedRescheduled", resource.getString("manageReports.options.closedRescheduled"));
-        	showStatus.put("custmrAccountActive", resource.getString("manageReports.options.custmrAccountActive"));
-        	showStatus.put("custmrAccountInactive", resource.getString("manageReports.options.custmrAccountInactive"));
-        	showStatus.put("cancel", resource.getString("manageReports.cancel"));
+    		showStatus.put("activeGoodStanding", messageSource.getMessage("manageReports.options.activeGoodStanding", null, null));
+        	showStatus.put("activeBadStanding", messageSource.getMessage("manageReports.options.activeBadStanding", null, null));
+        	showStatus.put("closedObligationMet", messageSource.getMessage("manageReports.options.closedObligationMet", null, null));
+        	showStatus.put("closedWrittenOff", messageSource.getMessage("manageReports.options.closedWrittenOff", null, null));
+        	showStatus.put("closedRescheduled", messageSource.getMessage("manageReports.options.closedRescheduled", null, null));
+        	showStatus.put("custmrAccountActive", messageSource.getMessage("manageReports.options.custmrAccountActive", null, null));
+        	showStatus.put("custmrAccountInactive", messageSource.getMessage("manageReports.options.custmrAccountInactive", null, null));
+        	showStatus.put("cancel", messageSource.getMessage("manageReports.cancel", null, null));
     	} else {
     		// accountType can only be "loan" or "savings"
-    		showStatus.put("active", resource.getString("manageReports.options.active"));
-    		showStatus.put("closed", resource.getString("manageReports.options.closed"));
-    		showStatus.put("inactive", resource.getString("manageReports.options.inactive"));
-    		showStatus.put("cancel", resource.getString("manageReports.cancel"));
+    		showStatus.put("active", messageSource.getMessage("manageReports.options.active", null, null));
+    		showStatus.put("closed", messageSource.getMessage("manageReports.options.closed", null, null));
+    		showStatus.put("inactive", messageSource.getMessage("manageReports.options.inactive", null, null));
+    		showStatus.put("cancel", messageSource.getMessage("manageReports.cancel", null, null));
     	}
     	
     	return showStatus;
@@ -109,12 +113,11 @@ public class DocumentController {
 	private Map<String, String> accountTypeMap() {
 
 		// Linked list for use with spring macro formSingleSelect
-		ResourceBundle resource = ResourceBundle.getBundle("org.springapp.i18n.messages");
     	Map<String, String> accountType = new LinkedHashMap<String, String>();
 
     	accountType.put("select", "-- Select --");
-    	accountType.put("loan", resource.getString("manageReports.loanaccount"));
-    	accountType.put("savings", resource.getString("manageReports.savingsaccount"));
+    	accountType.put("loan", messageSource.getMessage("manageReports.loanaccount", null, null));
+    	accountType.put("savings", messageSource.getMessage("manageReports.savingsaccount", null, null));
 
 		return accountType;
 	}
