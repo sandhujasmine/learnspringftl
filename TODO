@@ -1,6 +1,4 @@
 TODO
-[_] demonstrate use of UTF-8-encoded i18n files
-	try http://forum.springsource.org/showthread.php?p=169307
 [_] serve "GET /hello" instead of "GET /hello.ftl"
 
 DONE
@@ -18,5 +16,6 @@ DONE
 	instead, made an index.html file
 	doesn't expose underlying implementation (Freemarker)
 	cleaner URLs
+
 -----------------------------------------------------------------------
 vim: ft=vo_base
